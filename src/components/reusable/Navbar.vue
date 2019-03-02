@@ -5,7 +5,7 @@
       clipped
       v-model="drawer"
       app
-    >
+      >
       <menu-component :items="items" :co_items="co_items"/>
     </v-navigation-drawer>
     <v-toolbar
@@ -37,53 +37,57 @@
         <v-icon>search</v-icon>
       </v-btn>
       <v-menu offset-y>
-        <v-btn
-          dark
-          icon
-          large
-          slot="activator"
-          color="primary"
-          >
-          <v-icon>account_circle</v-icon>
-        </v-btn>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            dark
+            icon
+            large
+            slot="activator"
+            color="primary"
+            v-on="on"
+            >
+            <v-icon v-if="!userIsAuthenticated">account_circle</v-icon>
+            <v-avatar v-if="userIsAuthenticated" size="45" color="grey darken-3">
+              <img
+                class="elevation-6"
+                src='https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light'
+                alt="Vuetify"
+              >
+            </v-avatar>
+          </v-btn>
+        </template>
         <v-list>
-            <v-list-tile @click="dialog_login = !dialog_login">
+            <v-list-tile v-if="!userIsAuthenticated" @click="logIn()">
             <v-list-tile-title class="myPointer">Log in</v-list-tile-title>
             </v-list-tile>
-            <v-list-tile @click="dialog_signup = !dialog_signup">
+            <v-list-tile v-if="!userIsAuthenticated" @click="signUp()">
             <v-list-tile-title class="myPointer">Sign up</v-list-tile-title>
+            </v-list-tile>
+            <v-list-tile v-if="userIsAuthenticated" @click="logout()">
+            <v-list-tile-title class="myPointer">Log out</v-list-tile-title>
             </v-list-tile>
         </v-list>
       </v-menu>
     </v-toolbar>
-    <v-dialog v-model="dialog_login" width="450px">
-      <login/>
-    </v-dialog>
-    <v-dialog v-model="dialog_signup" width="450px">
-      <signup/>
-    </v-dialog>
    </div>
 </template>
 
 <script>
-import Login from '../authentication/Login'
-import Signup from '../authentication/Signup'
+import Auth from '../../controller/AuthenticationController'
 import MenuComponent from './MenuComponent'
 export default {
   data () {
     return {
-      dialog_login: false,
-      dialog_signup: false,
       drawer: true,
       items: [
-        { icon: 'home', text: 'Home', to: 'home' },
-        { icon: 'trending_up', text: 'Most Popular', to: 'trending' },
-        { icon: 'video_library', text: 'Playlists', to: 'playLists' },
-        { icon: 'watch_later', text: 'Saved', to: 'saved' }
+        { icon: 'home', text: 'Home', to: '/' },
+        { icon: 'trending_up', text: 'Most Popular', to: '/trending' },
+        { icon: 'video_library', text: 'Playlists', to: '/playLists' },
+        { icon: 'watch_later', text: 'Saved', to: '/saved' }
       ],
       co_items: [
-        { icon: 'add_circle_outline', text: 'My Channel', to: 'mychannel' },
-        { icon: 'settings', text: 'Account Management', to: 'accountmanagement' }
+        { icon: 'add_circle_outline', text: 'My Channel', to: '/channel/' },
+        { icon: 'settings', text: 'Account Management', to: '/setting/' }
       ]
     }
   },
@@ -91,9 +95,31 @@ export default {
     source: String
   },
   components: {
-    Login,
-    Signup,
     MenuComponent
+  },
+  methods: {
+    logIn () {
+      return this.$router.push('/login')
+    },
+    signUp () {
+      return this.$router.push('/signup')
+    },
+    logout () {
+      Auth.signOut().then(
+        res => {
+          this.$store.dispatch('logOut')
+        }
+      ).catch(
+        err => {
+          console.log(err.message)
+        }
+      )
+    }
+  },
+  computed: {
+    userIsAuthenticated () {
+      return this.$store.getters.getUserId !== null && this.$store.getters.getUserId !== undefined
+    }
   }
 }
 </script>

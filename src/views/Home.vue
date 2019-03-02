@@ -4,7 +4,7 @@
       <v-subheader><b>Trending</b></v-subheader>
       <v-layout wrap>
         <v-flex lg3 md3 sm6 xs12 v-for='song in songs' :key='song.title'>
-          <song-card :img='song.imgUrl' :title='song.title' :artist='song.artist' route='song'/>
+          <song-card :img='song.imgUrl' :title='song.title' :artist='song.artist' route='/song'/>
         </v-flex>
       </v-layout>
     </v-container>
@@ -13,7 +13,7 @@
       <v-subheader><b>Recommended</b></v-subheader>
       <v-layout wrap>
         <v-flex lg3 md3 sm6 xs12 v-for='song in songs' :key='song.title'>
-          <song-card :img='song.imgUrl' :title='song.title' :artist='song.artist' route='song'/>
+          <song-card :img='song.imgUrl' :title='song.title' :artist='song.artist' route='/song'/>
         </v-flex>
       </v-layout>
     </v-container>

@@ -27,4 +27,7 @@ export default {
   body {
     font-size: 18px
   }
+  .font-amber {
+    color: #ffa21a !important
+  }
 </style>

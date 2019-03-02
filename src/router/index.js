@@ -5,8 +5,10 @@ import Song from '@/views/Song'
 import Trending from '@/views/Trending'
 import PlayLists from '@/views/PlayLists'
 import Saved from '@/views/Saved'
-import MyChannel from '@/views/MyChannel'
+import Channel from '@/views/Channel'
 import AccountManagement from '@/views/AccountManagement'
+import Signup from '@/views/Signuppage'
+import Login from '@/views/Loginpage'
 
 Vue.use(Router)
 
@@ -19,6 +21,16 @@ export default new Router({
       component: Home
     },
     {
+      path: '/login',
+      name: 'login',
+      component: Login
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: Signup
+    },
+    {
       path: '/song',
       name: 'song',
       component: Song
@@ -29,22 +41,22 @@ export default new Router({
       component: Trending
     },
     {
-      path: '/playlists',
+      path: '/playLists',
       name: 'playlists',
       component: PlayLists
     },
     {
-      path: '/save',
+      path: '/saved',
       name: 'saved',
       component: Saved
     },
     {
-      path: '/mychannel',
-      name: 'mychannel',
-      component: MyChannel
+      path: '/channel/:id',
+      name: 'channel',
+      component: Channel
     },
     {
-      path: '/setting',
+      path: '/setting/:id',
       name: 'accountmanagement',
       component: AccountManagement
     }

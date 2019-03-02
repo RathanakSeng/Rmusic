@@ -45,23 +45,7 @@
                   </div>
                 </v-card-actions>
               </v-card-title>
-              <v-card-actions>
-                <v-list-tile-avatar color="grey darken-3">
-                    <v-img
-                      class="elevation-6"
-                      src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
-                    ></v-img>
-                </v-list-tile-avatar>
-                <v-list-tile-content>
-                    <v-list-tile-title>Blackpink</v-list-tile-title>
-                </v-list-tile-content>
-                <v-spacer></v-spacer>
-                <v-btn flat class="amber darken-3" v-bind:class="{'theme--dark': !follow, 'font-amber': follow, 'v-btn--outline': follow}" id="myDIV" @click="followAction">
-                  <span>{{ follow ? 'following' : 'follow' }}</span>
-                  <span class="ma-1"></span>
-                  <span v-text="nFollow"></span>
-                </v-btn>
-              </v-card-actions>
+              <channel-info />
           </v-flex>
         </v-layout>
       </v-flex>
@@ -132,15 +116,14 @@
 <script>
 import SongCard from '../components/reusable/SongCard'
 import RIframe from '../components/reusable/RIframe'
+import ChannelInfo from '../components/reusable/ChannelInfo'
 export default {
   data () {
     return {
       src: 'https://www.youtube.com/embed/b73BI9eUkjM',
       love: false,
-      follow: false,
       save: false,
       nLove: 256,
-      nFollow: 45,
       nComment: 25,
       showComment: false,
       show: false,
@@ -232,7 +215,8 @@ export default {
   },
   components: {
     SongCard,
-    RIframe
+    RIframe,
+    ChannelInfo
   },
   methods: {
     loveAction () {
@@ -241,14 +225,6 @@ export default {
         this.nLove++
       } else {
         this.nLove--
-      }
-    },
-    followAction () {
-      this.follow = !this.follow
-      if (this.follow) {
-        this.nFollow++
-      } else {
-        this.nFollow--
       }
     },
     saveAction () {
@@ -260,9 +236,6 @@ export default {
 
 <style>
 i.icon-amber {
-  color: #ffa21a !important
-}
-.font-amber {
   color: #ffa21a !important
 }
 </style>
