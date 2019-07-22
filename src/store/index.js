@@ -5,29 +5,48 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   strict: true,
   state: {
-    userId: null,
+    user: {
+      id: null,
+      username: null
+    },
     err: null,
     songs: []
   },
   mutations: {
-    setUserId (state, userId) {
-      state.userId = userId
+    setUser (state, user) {
+      state.user.id = user.id
+      state.user.username = user.username
+    },
+    setErr (state, message) {
+      state.err = message
     }
   },
   actions: {
     signup ({commit}, user) {
-      commit('setUserId', user.uid)
+      commit('setUser', user)
     },
-    autoLogin ({commit}, userId) {
-      commit('setUserId', userId)
+    login ({commit}, user) {
+      commit('setUser', user)
     },
-    logOut ({commit}) {
-      commit('setUserId', null)
+    autoLogin ({commit}, user) {
+      commit('setUser', user)
+    },
+    logout ({commit}) {
+      commit('setUser', {id: null, username: null})
+    },
+    err ({commit}, message) {
+      commit('setErr', message)
     }
   },
   getters: {
     getUserId (state) {
-      return state.userId
+      return state.user.id
+    },
+    getUserName (state) {
+      return state.user.name
+    },
+    getErr (state) {
+      return state.err
     }
   }
 })

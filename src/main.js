@@ -28,7 +28,14 @@ new Vue({
     })
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        this.$store.dispatch('autoLogin', user.uid)
+        firebase.database().ref().child('userInfo').orderByChild('id').equalTo(user.uid).once('value').then(
+          res => {
+            const obj = res.val()
+            for (let key in obj) {
+              this.$store.dispatch('autoLogin', obj[key])
+            }
+          }
+        )
       }
     })
   }

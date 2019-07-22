@@ -14,7 +14,7 @@
       </span>
     </v-list-tile-content>
     <v-spacer></v-spacer>
-    <v-btn v-if="uid != reqid" flat class="amber darken-3" v-bind:class="{'theme--dark': !follow, 'font-amber': follow, 'v-btn--outline': follow}" @click="followAction">
+    <v-btn v-if="getUserId != reqid" flat class="amber darken-3" v-bind:class="{'theme--dark': !follow, 'font-amber': follow, 'v-btn--outline': follow}" @click="followAction">
       <span>{{ follow ? 'following' : 'follow' }}</span>
     </v-btn>
   </v-card-actions>
@@ -25,7 +25,6 @@ export default {
     return {
       follow: false,
       isMe: false,
-      uid: 'YTWEGY1346HF67568Q4',
       reqid: this.$route.params.id
     }
   },
@@ -40,6 +39,11 @@ export default {
     },
     navigateToChannel (route, id) {
       this.$router.push(route + id)
+    }
+  },
+  computed: {
+    getUserId () {
+      return this.$store.getters.getUserId
     }
   }
 }

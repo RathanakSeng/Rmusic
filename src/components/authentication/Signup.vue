@@ -1,12 +1,19 @@
 <template>
   <v-flex xs12 sm8 md8>
+    <v-progress-linear :indeterminate="true" color="amber darken-3" v-if="loading"/>
     <v-card class="elevation-12">
       <v-toolbar dark color="amber darken-3">
-        <v-toolbar-title>Signup form</v-toolbar-title>
+        <v-toolbar-title>Signup</v-toolbar-title>
       </v-toolbar>
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-card-text>
           <alertbtn v-if="errMess" :message="errMess"/>
+          <v-text-field
+            prepend-icon="account_circle"
+            v-model="username"
+            label="Username"
+            required
+          ></v-text-field>
           <v-text-field
             prepend-icon="email"
             v-model="email"
@@ -36,8 +43,10 @@ import Alertbtn from './Alertbtn'
 import Auth from '../../controller/AuthenticationController'
 export default {
   data: () => ({
+    loading: false,
     valid: true,
     errMess: null,
+    username: '',
     email: '',
     emailRules: [
       v => !!v || 'E-mail is required',
@@ -52,20 +61,25 @@ export default {
   methods: {
     signup () {
       if (this.$refs.form.validate()) {
+        this.loading = true
         Auth.register({
+          username: this.username,
           email: this.email,
           password: this.password
         }).then(
           res => {
-            this.$store.dispatch('signup', res.user)
+            this.loading = false
+            this.$store.dispatch('signup', res)
+            this.$store.dispatch('err', null)
             if (this.$store.getters.getUserId) {
               this.$router.push('/')
             }
           }
         ).catch(
           err => {
-            console.log(err)
-            this.errMess = err.message
+            this.loading = false
+            this.$store.dispatch('err', err.message)
+            this.errMess = this.$store.getters.getErr
           }
         )
       }

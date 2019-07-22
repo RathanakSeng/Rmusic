@@ -9,6 +9,7 @@ import Channel from '@/views/Channel'
 import AccountManagement from '@/views/AccountManagement'
 import Signup from '@/views/Signuppage'
 import Login from '@/views/Loginpage'
+import Upload from '@/views/Upload'
 
 Vue.use(Router)
 
@@ -59,6 +60,11 @@ export default new Router({
       path: '/setting/:id',
       name: 'accountmanagement',
       component: AccountManagement
+    },
+    {
+      path: '/upload',
+      name: 'upload',
+      component: Upload
     }
   ]
 })

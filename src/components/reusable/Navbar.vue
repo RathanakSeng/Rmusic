@@ -36,26 +36,26 @@
       <v-btn icon class="show-sm-and-down hidden-md-and-up">
         <v-icon>search</v-icon>
       </v-btn>
+      <v-btn icon @click="toUpload()">
+        <v-icon>add_to_queue</v-icon>
+      </v-btn>
       <v-menu offset-y>
-        <template v-slot:activator="{ on }">
-          <v-btn
-            dark
-            icon
-            large
-            slot="activator"
-            color="primary"
-            v-on="on"
-            >
-            <v-icon v-if="!userIsAuthenticated">account_circle</v-icon>
-            <v-avatar v-if="userIsAuthenticated" size="45" color="grey darken-3">
+        <v-btn
+          dark
+          icon
+          large
+          slot="activator"
+          color="primary"
+          >
+          <v-icon v-if="!userIsAuthenticated">account_circle</v-icon>
+          <v-avatar v-if="userIsAuthenticated" size="45" color="grey darken-3">
               <img
                 class="elevation-6"
                 src='https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light'
                 alt="Vuetify"
               >
             </v-avatar>
-          </v-btn>
-        </template>
+        </v-btn>
         <v-list>
             <v-list-tile v-if="!userIsAuthenticated" @click="logIn()">
             <v-list-tile-title class="myPointer">Log in</v-list-tile-title>
@@ -91,9 +91,6 @@ export default {
       ]
     }
   },
-  props: {
-    source: String
-  },
   components: {
     MenuComponent
   },
@@ -107,13 +104,21 @@ export default {
     logout () {
       Auth.signOut().then(
         res => {
-          this.$store.dispatch('logOut')
+          this.$store.dispatch('logout')
+          this.$router.push('/')
         }
       ).catch(
         err => {
-          console.log(err.message)
+          this.$store.dispatch('err', err.message)
         }
       )
+    },
+    toUpload () {
+      if (this.$store.getters.getUserId) {
+        this.$router.push('/upload')
+      } else {
+        this.$router.push('/login')
+      }
     }
   },
   computed: {
